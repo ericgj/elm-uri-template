@@ -1,21 +1,27 @@
-# String.Interpolate
-[![Build Status](https://travis-ci.org/lukewestby/elm-string-interpolate.svg)](https://travis-ci.org/lukewestby/elm-string-interpolate)
+# Url.Interpolate
 
-Inject values from a list into a template. Useful for i18n and templated copy.
+Inject values from a Dict into a [URI Template][rfc6570].
 
 ## Documentation
 
-`String.Interpolate` exports one function `interpolate : String -> List String
--> String`. The input string should use the format `"first arg: {0}, second
-arg: {1}"` and so on.
+`Url.Interpolate` provides a single function, `interpolate`, which takes
+a [URI Template][rfc6570] string and a Dict of variables, and expands
+the input string according to the rules in [IETF RFC 6570][rfc6570],
+up to Level 3 (Level 4 compliance is not provided or planned).
+
+PLEASE NOTE: not yet formally tested, use at your own risk.
+
+This package was adapted from [lukewestby/elm-string-interpolate][lukewestby].
+
 
 **Example:**
 ```elm
-import String.Interpolate exposing(interpolate)
+interpolate "http://example.com/{path}{?x,y,empty}" <| 
+    Dict.fromList [("path", "hello"), ("x", "1024"), ("y", "768")]
 
-output : String
-output =
-  interpolate "My name is {0} {1}" ["Luke", "Westby"]
-
-main = show output {- "My name is Luke Westby" -}
+-- "http://example.com/hello?x=1024&y=768&empty="
 ```
+
+[rfc6570]: https://tools.ietf.org/html/rfc6570
+[lukewestby]: https://github.com/lukewestby/elm-string-interpolate 
+
