@@ -8,37 +8,35 @@ complex strings in views.
 
 -}
 
-import Array exposing (Array, fromList, get)
-import Maybe exposing (andThen, withDefault)
-import Regex exposing (Match, Regex, fromString, never, replace)
+import Dict exposing (Dict)
+import Maybe
+-- import Maybe exposing (andThen, withDefault)
+import Regex exposing (Regex, Match)
+-- import Regex exposing (Match, Regex, fromString, never, replace)
 import String exposing (dropLeft, dropRight, toInt)
 
 
 {-| Inject other strings into a string in the order they appear in a List
-interpolate "{0} {2} {1}" ["hello", "!!", "world"]
-"{0} {2} {1}" `interpolate` ["hello", "!!", "world"]
+interpolate "{greet} {exclaim} {who}" <| 
+    Dict.fromList [("greet", "hello"), ("exclaim", "!!"), ("who", "world")]
 -}
-interpolate : String -> List String -> String
+interpolate : String -> Dict String String -> String
 interpolate string args =
-    let
-        asArray =
-            fromList args
-    in
-    replace interpolationRegex (applyInterpolation asArray) string
+    Regex.replace interpolationRegex (applyInterpolation args) string
 
 
 interpolationRegex : Regex
 interpolationRegex =
-    fromString "\\{\\d+\\}" |> withDefault Regex.never
+    Regex.fromString "\\{\\d+\\}" |> Maybe.withDefault Regex.never
 
 
-applyInterpolation : Array String -> Match -> String
+applyInterpolation : Dict String String -> Match -> String
 applyInterpolation replacements { match } =
     let
-        ordinalString =
+        key =
             (dropLeft 1 << dropRight 1) match
     in
-    ordinalString
-        |> toInt
-        |> andThen (\value -> get value replacements)
-        |> withDefault ""
+    key
+        |> (\k -> Dict.get k replacements)
+        |> Maybe.withDefault match
+

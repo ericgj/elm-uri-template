@@ -9,6 +9,6 @@ suite : Test
 suite =
     test "interpolation" <|
         \() ->
-            [ "hello", "!!", "world" ]
-                |> interpolate "{0} {2} {1}"
+            Dict.fromList [ ("greet","hello"), ("punct","!!"), ("who", "world") ]
+                |> interpolate "{greet} {who} {punct}"
                 |> Expect.equal "hello world !!"
