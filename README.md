@@ -9,8 +9,6 @@ a [URI Template][rfc6570] string and a Dict of variables, and expands
 the input string according to the rules in [IETF RFC 6570][rfc6570],
 up to Level 3 (Level 4 compliance is not provided or planned).
 
-PLEASE NOTE: not yet formally tested, use at your own risk.
-
 This package was adapted from [lukewestby/elm-string-interpolate][lukewestby].
 
 
