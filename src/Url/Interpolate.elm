@@ -1,8 +1,8 @@
 module Url.Interpolate exposing (interpolate)
 
 {-| Url.Interpolate provides a single function, `interpolate`, which takes
-a [URI Template][rfc6570] string and a Dict of variables, and expands
-the input string according to the rules in [IETF RFC 6570][rfc6570],
+a URI Template string and a Dict of variables, and expands
+the input string according to the rules in IETF RFC 6570,
 up to Level 3 (Level 4 compliance is not provided or planned).
 
 @docs interpolate
@@ -20,10 +20,10 @@ import Set exposing (Set)
 
 {-| Example URI template interpolation:
 
-interpolate "<http://example.com/{path}{?x,y,empty}"> <|
-Dict.fromList [("path", "hello"), ("x", "1024"), ("y", "768")]
+    interpolate "<http://example.com/{path}{?x,y,empty}"> <|
+    Dict.fromList [("path", "hello"), ("x", "1024"), ("y", "768")]
 
-> "<http://example.com/hello?x=1024&y=768&empty=">
+    -- "<http://example.com/hello?x=1024&y=768&empty=">
 
 Internal note: I was surprised to find that the baseline %-encode rules for URI
 templates are _slightly different_ than the built-in `encodeURIComponent`. For
